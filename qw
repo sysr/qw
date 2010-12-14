@@ -1,0 +1,68 @@
+#!/bin/bash
+
+script=$(readlink -f $0)
+scriptpath=`dirname $script`
+
+# The qw_db folder should be in the same folder as the qw script
+qwdb="$scriptpath/qw_db"
+
+function print_help ()
+{
+	echo "qw - http://www.sysr.co.uk"
+	echo "Usage: qw [-a|-d|-l|-c] name [username] [ip] [arguments]"
+	echo
+	echo "Add a new quick connection"
+	echo "		qw -a bserv root 10.2.2.10 '-D 9999'"
+	echo
+	echo "Connect to existing SSH connection"
+	echo "		qw name"
+	echo
+	echo "List available connections"
+	echo "		qw -l"
+	echo
+	echo "Delete a connection"
+	echo "		qw -d name"
+	echo
+	echo "Copy your ~/.ssh/id_dsa.pub key over to another machine"
+	echo "		qw -c username ip"
+}
+
+if [ ! -d "$qwdb" ]; then
+	echo "The qw_db folder does not exist, would you like me to create it for you?"
+	read -p "(y/n): " pt_create_qwdb
+		if [ "$pt_create_qwdb" == "y" ]; then
+			mkdir -p $qwdb
+			echo "Done"
+			echo
+		else
+			echo "The $qwdb directory must exist before you may use this program, please create it"
+			exit 1
+		fi
+fi
+
+if [ ! "$1" ]; then
+	print_help
+	exit 1
+fi
+
+if [ "$1" == "-a" -a "$2" -a "$3" -a "$4" ]; then
+	if [ "$5" ]; then
+		echo "$5 $3@$4" > $qwdb/$2
+	else
+		echo "$3@$4" > $qwdb/$2
+	fi
+elif [ "$1" == "-d" -a "$2" ]; then
+        rm -f $qwdb/$2
+elif [ "$1" == "-l" ]; then
+	ls $qwdb
+elif [ "$1" == "-c" -a "$2" -a "$3" ]; then
+	echo "You will be prompted for your password twice."
+	NUMBER=$[ ( $RANDOM % 100 )  + 1 ]
+	scp ~/.ssh/id_dsa.pub $2@$3:~/.ssh/$NUMBER.tmp
+	ssh -l $2 $3 "cat ~/.ssh/$NUMBER.tmp >> ~/.ssh/authorized_keys; rm -f ~/.ssh/$NUMBER.tmp"
+elif [ -f "$qwdb/$1" ]; then
+	ssh `cat $qwdb/$1`
+else
+	print_help
+	exit 1
+fi;
