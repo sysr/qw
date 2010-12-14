@@ -23,7 +23,7 @@ function print_help ()
 	echo "Delete a connection"
 	echo "		qw -d name"
 	echo
-	echo "Copy your ~/.ssh/id_dsa.pub key over to another machine"
+	echo "Copy your ~/.ssh/id_dsa.pub key over to another machine for SSH key authentication"
 	echo "		qw -c username ip"
 }
 

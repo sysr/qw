@@ -14,5 +14,5 @@ List available connections
 Delete a connection
 		qw -d name
 
-Copy your ~/.ssh/id_dsa.pub key over to another machine
+Copy your ~/.ssh/id_dsa.pub key over to another machine for SSH key authentication
 		qw -c username ip
