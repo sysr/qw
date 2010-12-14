@@ -3,7 +3,7 @@ qw - http://www.sysr.co.uk
 Usage: qw [-a|-d|-l|-c] name [username] [ip] [arguments]
 
 Add a new quick connection
-		qw -a bserv root 10.2.2.10 '-D 9999'
+		qw -a name root 10.2.2.10 '-D 9999'
 
 Connect to existing SSH connection
 		qw name
