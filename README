@@ -1,0 +1,18 @@
+qw - http://www.sysr.co.uk
+
+Usage: qw [-a|-d|-l|-c] name [username] [ip] [arguments]
+
+Add a new quick connection
+		qw -a bserv root 10.2.2.10 '-D 9999'
+
+Connect to existing SSH connection
+		qw name
+
+List available connections
+		qw -l
+
+Delete a connection
+		qw -d name
+
+Copy your ~/.ssh/id_dsa.pub key over to another machine
+		qw -c username ip
